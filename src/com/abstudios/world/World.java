@@ -94,42 +94,42 @@ public class World {
 						case 0xffffffff:
 							//Barranco Horizontal Sup
 							
-								tiles[xx + (yy*WIDTH)] = new WallTile(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_HORIZONTAL_SUPERIOR);
+								tiles[xx + (yy*WIDTH)] = new WallTileNoJump(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_HORIZONTAL_SUPERIOR);
 							break;
 						case 0xffffff01:
 							//Barranco horizonta inf
 								
-								tiles[xx + (yy*WIDTH)] = new WallTile(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_HORIZONTAL_INFERIOR);
+								tiles[xx + (yy*WIDTH)] = new WallTileNoJump(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_HORIZONTAL_INFERIOR);
 							break;
 						case 0xff01ffff:
 							//Barranco vertical Direita
 							
-								tiles[xx + (yy*WIDTH)] = new WallTile(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_VERTICAL_DIREITA);
+								tiles[xx + (yy*WIDTH)] = new WallTileNoJump(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_VERTICAL_DIREITA);
 							break;
 						case 0xffff01ff:
 							//Barranco vertical Esquerda
 							
-								tiles[xx + (yy*WIDTH)] = new WallTile(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_VERTICAL_ESQUERDA);
+								tiles[xx + (yy*WIDTH)] = new WallTileNoJump(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_VERTICAL_ESQUERDA);
 							break;
 						case 0xff4b4d4b:
 							//Barranco Canto Superior Esquerdo
 							
-								tiles[xx + (yy*WIDTH)] = new WallTile(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_CANTO_SUPERIOR_ESQUERDO);
+								tiles[xx + (yy*WIDTH)] = new WallTileNoJump(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_CANTO_SUPERIOR_ESQUERDO);
 							break;
 						case 0xff444544:
 							//Barranco Canto SUPERIOR Direito
 							
-								tiles[xx + (yy*WIDTH)] = new WallTile(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_CANTO_SUPERIOR_DIREITO);
+								tiles[xx + (yy*WIDTH)] = new WallTileNoJump(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_CANTO_SUPERIOR_DIREITO);
 							break;
 						case 0xff373937:
 							////Barranco Canto inf Direito
 							
-								tiles[xx + (yy*WIDTH)] = new WallTile(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_CANTO_INFERIOR_DIREITO);
+								tiles[xx + (yy*WIDTH)] = new WallTileNoJump(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_CANTO_INFERIOR_DIREITO);
 							break;
 						case 0xff343634:
 							//Barranco Canto inf esquerdo
 							
-								tiles[xx + (yy*WIDTH)] = new WallTile(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_CANTO_INFERIOR_ESQUERDO);
+								tiles[xx + (yy*WIDTH)] = new WallTileNoJump(xx*TILE_SIZE, yy*TILE_SIZE, Tile.TILE_BARRANCO_CANTO_INFERIOR_ESQUERDO);
 							break;
 						case 0xff9bd5f7:
 							// Parede
@@ -200,7 +200,43 @@ public class World {
 				tiles[x3 + (y3*World.WIDTH)] instanceof WallTile  ||
 				tiles[x4 + (y4*World.WIDTH)] instanceof WallTile);
 	}
+
+	public static boolean isFreePlayer(int xnext, int ynext) {
+		
+		int x1 = xnext/TILE_SIZE;
+		int y1 = ynext/TILE_SIZE;
+		
+		int x2 = (xnext + TILE_SIZE -2)/TILE_SIZE;
+		int y2 = ynext/TILE_SIZE;
+		
+		int x3 = xnext/TILE_SIZE;
+		int y3 = (ynext + TILE_SIZE -2)/TILE_SIZE;
+		
+		int x4 = (xnext + TILE_SIZE -2)/TILE_SIZE;
+		int y4 = (ynext + TILE_SIZE -2)/TILE_SIZE;
+		
+			 if(!(tiles[x1 + (y1*World.WIDTH)] instanceof WallTile ||
+				tiles[x2 + (y2*World.WIDTH)] instanceof WallTile  ||
+				tiles[x3 + (y3*World.WIDTH)] instanceof WallTile  ||
+				tiles[x4 + (y4*World.WIDTH)] instanceof WallTile) && !(tiles[x1 + (y1*World.WIDTH)] instanceof WallTileNoJump ||
+				tiles[x2 + (y2*World.WIDTH)] instanceof WallTileNoJump  ||
+				tiles[x3 + (y3*World.WIDTH)] instanceof WallTileNoJump  ||
+				tiles[x4 + (y4*World.WIDTH)] instanceof WallTileNoJump)){
+					return true;
+				}
+
+				if(Game.player.z > 0 && (tiles[x1 + (y1*World.WIDTH)] instanceof WallTile ||
+				tiles[x2 + (y2*World.WIDTH)] instanceof WallTile  ||
+				tiles[x3 + (y3*World.WIDTH)] instanceof WallTile  ||
+				tiles[x4 + (y4*World.WIDTH)] instanceof WallTile)){
+					return true;
+				}
+				return false;
+	}
 	
+	
+	
+
 	public static void restartGame(String level) {
 
 		double life = 50;
