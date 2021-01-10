@@ -55,7 +55,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public Ui[] ui;
 
-	public static String gameState = "NORMAL";
+	public static String gameState = "MENU";
+	private boolean showMessageGameOver = true;
+	private int framesGameOver = 0;
+	private boolean restartGame = false;
 	
 	
 	public Game() {
@@ -121,6 +124,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public void tick() {
 		if(gameState == "NORMAL"){
+			//Previne do jogar apertar enter e reiniciar o jogo no meio do jogo
+			this.restartGame = false;
 			for(int i = 0; i < ui.length;i++) {
 				ui[i].tick();
 			}
@@ -148,7 +153,25 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				World.restartGame(newWorld);
 			}
 		}else if(gameState == "GAME_OVER"){
-			System.out.println("GAME OVER");
+			this.framesGameOver++;
+			if(this.framesGameOver == 30){
+				this.framesGameOver = 0;
+				if(this.showMessageGameOver){
+					this.showMessageGameOver = false;
+				}else{
+					this.showMessageGameOver = true;
+				}
+				if(restartGame){
+					this.restartGame = false;
+					gameState = "NORMAL";
+					CUR_LEVEL = 1;
+					String newWorld = "level"+CUR_LEVEL+".png";
+					//System.out.println(newWorld);
+					World.restartGame(newWorld);
+				}
+			}
+		}else if(gameState =="MENU"){
+			
 		}
 	}
 	
@@ -189,7 +212,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			g2.setColor(new Color(0,0,0,100));
 			g2.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
 			renderizaStringPixelada(g, "GAME OVER", (WIDTH * SCALE) /2 -70, (HEIGHT*SCALE) / 2, 50);
-			renderizaStringPixelada(g, ">PRESSIONE ENTER PARA REINICIAR<", (WIDTH * SCALE) /2 -300, (HEIGHT*SCALE) / 2 + 40, 40);
+			if(showMessageGameOver)
+				renderizaStringPixelada(g, ">PRESSIONE ENTER PARA REINICIAR<", (WIDTH * SCALE) /2 -300, (HEIGHT*SCALE) / 2 + 60, 40);
 		}
 		bs.show();
 	}
@@ -294,6 +318,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			System.out.println("Atirando");
 			player.shoot = true;
 		}
+
+		if(e.getKeyCode() == KeyEvent.VK_ENTER){
+			restartGame = true;
+		}
+
 	}
 
 

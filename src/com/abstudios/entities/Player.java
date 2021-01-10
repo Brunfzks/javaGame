@@ -31,7 +31,7 @@ public class Player extends Entity {
 	private BufferedImage[] gunRightPlayer;
 	private BufferedImage[] gunLeftPlayer;
 	
-	public double life =10;
+	public double life = 50;
 	public int maxLife = 50;
 	public int ammo = 0;
 	public int maxAmmo = 30;
