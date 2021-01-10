@@ -38,9 +38,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private boolean isRunning = true;
 	public final static int WIDTH = 360;
 	public final static int HEIGHT = 220;
-	private final int SCALE = 3;
+	public final static int SCALE = 3;
 	
-	private int CUR_LEVEL = 1, MAX_CUR = 2;
+	public static int CUR_LEVEL = 1, MAX_CUR = 2;
 	private BufferedImage image;
 	
 	public static List<Entity> entities;
@@ -56,10 +56,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public Ui[] ui;
 
 	public static String gameState = "MENU";
+
 	private boolean showMessageGameOver = true;
 	private int framesGameOver = 0;
 	private boolean restartGame = false;
 	
+	public Menu menu;
+
 	
 	public Game() {
 			
@@ -78,6 +81,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		player = new Player(0, 0, 32, 32, spritesheet.getSprite(192, 0, 32, 32));
 		entities.add(player);
 		world = new World("/level1.png");
+
+		menu = new Menu();
 	}
 	
 	public void initFrame() {
@@ -149,7 +154,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				}
 				
 				String newWorld = "level"+CUR_LEVEL+".png";
-				System.out.println(newWorld);
+				//System.out.println(newWorld);
 				World.restartGame(newWorld);
 			}
 		}else if(gameState == "GAME_OVER"){
@@ -171,7 +176,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				}
 			}
 		}else if(gameState =="MENU"){
-			
+			menu.tick();
 		}
 	}
 	
@@ -214,6 +219,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			renderizaStringPixelada(g, "GAME OVER", (WIDTH * SCALE) /2 -70, (HEIGHT*SCALE) / 2, 50);
 			if(showMessageGameOver)
 				renderizaStringPixelada(g, ">PRESSIONE ENTER PARA REINICIAR<", (WIDTH * SCALE) /2 -300, (HEIGHT*SCALE) / 2 + 60, 40);
+		}else if(gameState == "MENU"){
+			menu.render(g);
 		}
 		bs.show();
 	}
@@ -306,11 +313,17 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_UP ||  e.getKeyCode() == KeyEvent.VK_W) {
-			
+		
 			player.up = true;
+			if(gameState == "MENU"){
+				menu.up = true;
+			}
 		}else if(e.getKeyCode() == KeyEvent.VK_DOWN ||  e.getKeyCode() == KeyEvent.VK_S) {
-			
+
 			player.down = true;
+			if(gameState == "MENU"){
+				menu.down = true;
+			}
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_X) {
@@ -321,6 +334,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			restartGame = true;
+			if(gameState == "MENU"){
+				menu.enter = true;
+			}
+		}
+
+		if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+			gameState = "MENU";
+			menu.pause = true;
 		}
 
 	}

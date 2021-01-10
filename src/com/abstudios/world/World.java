@@ -141,7 +141,7 @@ public class World {
 								Game.entities.add(new Weapon(xx*TILE_SIZE, yy*TILE_SIZE, WIDTH, HEIGHT, Entity.WEAPON_EN));
 							break;
 						case 0xff38fc07:
-							//Muniçao
+							//Muniï¿½ao
 							Bullet ammo = new Bullet(xx*TILE_SIZE, yy*TILE_SIZE, WIDTH, HEIGHT, Bullet.BULLET_EN);
 							ammo.setMask(4, 8, 16, 16);
 							Game.entities.add(ammo);
@@ -202,11 +202,21 @@ public class World {
 	}
 	
 	public static void restartGame(String level) {
+
+		double life = 50;
+		int ammo = 0;
+
+		if(Game.CUR_LEVEL == Game.MAX_CUR){
+			 life = Game.player.life;
+			 ammo = Game.player.ammo;
+		}
 		
 		Game.entities = new ArrayList<Entity>();
 		Game.enemis = new ArrayList<Enemy>();
 		Game.spritesheet = new Spritesheet("/spritesheet32.png");
 		Game.player = new Player(0, 0, 32, 32, Game.spritesheet.getSprite(192, 0, 32, 32));
+		Game.player.ammo = ammo;
+		Game.player.life = life;
 		Game.entities.add(Game.player);
 		Game.world = new World("/"+level);
 	}
