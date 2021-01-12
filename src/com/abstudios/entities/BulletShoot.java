@@ -31,6 +31,14 @@ public class BulletShoot extends Entity{
 			return;
 		}
 	}
+
+	public void destroySelf(){
+
+		Game.bullets.remove(this);
+		Game.entities.remove(this);
+		return;	
+	}
+	
 	
 	public void render(Graphics g) {
 		

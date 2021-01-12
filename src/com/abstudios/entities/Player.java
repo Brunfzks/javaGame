@@ -153,58 +153,61 @@ public class Player extends Entity {
 		
 		if(shoot || mouseShoot) {
 			
-			double angle = Math.atan2(my - (this.getY() + 16 - Camera.y), mx - (this.getX() + 16 - Camera.x));
-			if(shoot)
-				angle = 0;
-			shoot = false;
-			mouseShoot = false;
-			System.out.println(my);
-			
-			if(hasGun && ammo > 0) {
-				ammo --;
-				double dx = Math.cos(angle);
-				double dy = Math.sin(angle);
-				int px = 16;
-				int py = 16;
-				double speed = 0;
-					
-				if(dir == rightDir) {
-					if(moved) {
+			if(isJumping != true){
+				double angle = Math.atan2(my - (this.getY() + 16 - Camera.y), mx - (this.getX() + 16 - Camera.x));
+				if(shoot)
+					angle = 0;
+				shoot = false;
+				mouseShoot = false;
+				System.out.println(my);
+				
+				if(hasGun && ammo > 0) {
+					ammo --;
+					double dx = Math.cos(angle);
+					double dy = Math.sin(angle);
+					int px = 16;
+					int py = 16;
+					double speed = 0;
 						
-						px = 27;
-						dx = 1;
-						py = 20;
-						speed = 4.5;
-					}else {
-						speed = 3;
-						px = 23;
-						dx = 1;
-						py = 22;
-					}
-					
-				}else {
-					
-					if(moved) {
+					if(dir == rightDir) {
+						if(moved) {
+							
+							px = 27;
+							dx = 1;
+							py = 20;
+							speed = 4.5;
+						}else {
+							speed = 3;
+							px = 23;
+							dx = 1;
+							py = 22;
+						}
 						
-						px = 5;
-						dx = -1;
-						py = 18;
-						speed = 4.5;
 					}else {
-						speed = 3;
-						px = 5;
-						dx = -1;
-						py = 22;
+						
+						if(moved) {
+							
+							px = 5;
+							dx = -1;
+							py = 18;
+							speed = 4.5;
+						}else {
+							speed = 3;
+							px = 5;
+							dx = -1;
+							py = 22;
+						}
 					}
+				
+					BulletShoot bullet = new BulletShoot(this.getX()+px, this.getY()+py, 3, 3, null, dx, dy, speed); 
+					Game.bullets.add(bullet);
 				}
-			
-				BulletShoot bullet = new BulletShoot(this.getX()+px, this.getY()+py, 3, 3, null, dx, dy, speed); 
-				Game.bullets.add(bullet);
-			}
-			if(Game.player.life  <=0){
-				Game.gameState="GAME_OVER";
+				if(Game.player.life  <=0){
+					Game.gameState="GAME_OVER";
+				}
 			}
 		}
+
 		Camera.x =   Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*32 - Game.WIDTH);
 		Camera.y =   Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*32 - Game.HEIGHT);
 	}
@@ -266,14 +269,14 @@ public class Player extends Entity {
 			}else if(dir == leftDir && moved) {
 				
 				g.drawImage(gunLeftPlayer[index], (int)this.getX() - Camera.x, (int)this.getY() - Camera.y -z,null);
-				//arma
+				//arma76
 				g.drawImage(Entity.WEAPON_LEFT, this.getX() - Camera.x, this.getY() + 16 - Camera.y -z, null);
 			}
 
 			if(dir == rightDir && moved == false) {
 				
 				g.drawImage(idleRightPlayer[index], (int)this.getX() - Camera.x, (int)this.getY() - Camera.y -z,null);
-				g.drawImage(Entity.WEAPON_RIGHT, this.getX() - 1 - Camera.x, this.getY() + 14 - Camera.y, null);
+				g.drawImage(Entity.WEAPON_RIGHT, this.getX() - 1 - Camera.x, this.getY() + 14 - Camera.y -z, null);
 			}else if(dir == leftDir && moved == false) {
 				
 				g.drawImage(idleLeftPlayer[index], (int)this.getX() - Camera.x, (int)this.getY() - Camera.y -z,null);

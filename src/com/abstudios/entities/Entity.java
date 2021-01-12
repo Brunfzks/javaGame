@@ -99,6 +99,9 @@ public class Entity {
 		return this.height;
 	}
 	
+	public void destroySelf() {
+		
+	}
 	
 	public void render(Graphics g) {
 		

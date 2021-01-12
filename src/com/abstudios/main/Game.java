@@ -131,6 +131,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		if(gameState == "NORMAL"){
 			//Previne do jogar apertar enter e reiniciar o jogo no meio do jogo
 			this.restartGame = false;
+
 			for(int i = 0; i < ui.length;i++) {
 				ui[i].tick();
 			}
@@ -155,6 +156,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				
 				String newWorld = "level"+CUR_LEVEL+".png";
 				//System.out.println(newWorld);
+				for(int i = 0; i < bullets.size(); i++){
+					bullets.get(i).destroySelf();
+				}
 				World.restartGame(newWorld);
 			}
 		}else if(gameState == "GAME_OVER"){
@@ -176,6 +180,27 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				}
 			}
 		}else if(gameState =="MENU"){
+			if(save.saveGame){
+				save.saveGame = false;
+
+				String[] opt1 = {
+				"level",
+				 "vida",
+				 "ammo",
+				 "playerX",
+				 "playerY"};
+
+
+				int[] opt2 = {
+					 CUR_LEVEL,
+					 (int)(player.life),
+					 (int)player.ammo,
+					 (int)player.getX(),
+					 (int)player.getY()};
+
+				save.saveGame(opt1, opt2, 10);
+				System.out.println("Jogo Salvo");
+			}
 			menu.tick();
 		}
 	}
