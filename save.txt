@@ -1,5 +1,0 @@
-level:;
-vida:?:
-ammo:;?
-playerX:<=B
-playerY:@>

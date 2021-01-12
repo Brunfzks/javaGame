@@ -5,6 +5,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -13,6 +14,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,9 +32,10 @@ import com.abstudios.graficos.Ui;
 import com.abstudios.world.Camera;
 import com.abstudios.world.World;
 
-public class Game extends Canvas implements Runnable, KeyListener, MouseListener  {
+import java.awt.Font;
 
-	
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
+
 	private static final long serialVersionUID = 935073154186464789L;
 	public static JFrame frame;
 	private Thread thread;
@@ -39,20 +43,20 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public final static int WIDTH = 360;
 	public final static int HEIGHT = 220;
 	public final static int SCALE = 3;
-	
+
 	public static int CUR_LEVEL = 1, MAX_CUR = 2;
 	private BufferedImage image;
-	
+
 	public static List<Entity> entities;
 	public static List<Enemy> enemis;
 	public static List<BulletShoot> bullets;
 	public static Spritesheet spritesheet;
 	public static World world;
-	
-	public static Random rand; 
-	
+
+	public static Random rand;
+
 	public static Player player;
-	
+
 	public Ui[] ui;
 
 	public static String gameState = "MENU";
@@ -60,11 +64,25 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private boolean showMessageGameOver = true;
 	private int framesGameOver = 0;
 	private boolean restartGame = false;
-	
+
 	public Menu menu;
 
-	
+	// CARREGANDO FONTS
+	public InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("Fipps-Regular.ttf");
+	public static Font fipps;
+
 	public Game() {
+
+		// Fonts
+		try {
+			fipps = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(50f);
+		} catch (FontFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			
 		rand = new Random();
 		addKeyListener(this);
@@ -233,7 +251,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			bullets.get(i).render(g);
 		}
 		uiRender(g);
-		
+
 		g.dispose();	
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);

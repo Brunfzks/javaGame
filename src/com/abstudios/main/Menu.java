@@ -91,7 +91,8 @@ public class Menu {
         //Opçoes
         g.setColor(new Color(191, 181, 35));
         g.setFont(new Font("arial", Font.BOLD, 50));
-        g.drawString("Mr.Bullet", (Game.WIDTH * Game.SCALE) / 2 -100, (Game.HEIGHT * Game.SCALE) / 2 - 250);
+        g.setFont(Game.fipps);
+        g.drawString("Mr.Bullet", (Game.WIDTH * Game.SCALE) / 2 -120, (Game.HEIGHT * Game.SCALE) / 2 - 250);
 
         g.setFont(new Font("arial", Font.BOLD, 30));
         if(pause == false){
