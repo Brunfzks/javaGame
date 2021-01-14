@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
@@ -27,6 +28,7 @@ import com.abstudios.entities.BulletShoot;
 import com.abstudios.entities.Enemy;
 import com.abstudios.entities.Entity;
 import com.abstudios.entities.Player;
+import com.abstudios.graficos.LightMap;
 import com.abstudios.graficos.Spritesheet;
 import com.abstudios.graficos.Ui;
 import com.abstudios.world.Camera;
@@ -68,6 +70,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public Menu menu;
 
+	public static int[] pixels;
+
+	public LightMap lightmap;
+
 	// CARREGANDO FONTS
 	public InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("Fipps-Regular.ttf");
 	public static Font fipps;
@@ -96,10 +102,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		initFrame();
 		//Inicializando objetos
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 		entities = new ArrayList<Entity>();
 		enemis = new ArrayList<Enemy>();
 		bullets = new ArrayList<BulletShoot>();
 		spritesheet = new Spritesheet("/spritesheet32.png");
+		lightmap = new LightMap();
 		elementsUi();
 		player = new Player(0, 0, 32, 32, spritesheet.getSprite(192, 0, 32, 32));
 		System.out.println(player.maskx + "lalalalala");
@@ -180,9 +188,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				
 				String newWorld = "level"+CUR_LEVEL+".png";
 				//System.out.println(newWorld);
-				for(int i = 0; i < bullets.size(); i++){
-					bullets.get(i).destroySelf();
-				}
+				bullets.clear();
 				World.restartGame(newWorld);
 			}
 		}else if(gameState == "GAME_OVER"){
@@ -226,6 +232,18 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				System.out.println("Jogo Salvo");
 			}
 			menu.tick();
+		}
+	}
+
+	public void drawRectRectangleExample(int offX, int offY){
+		for(int xx = 0; xx < 32; xx++){
+			for(int yy = 0; yy < 32; yy++){
+				int offx = xx + offX;
+				int offy = yy + offY;
+				if(offx < 0 || offy < 0 || offx > WIDTH || offy > HEIGHT)
+					continue;
+				pixels[offx + (offy * WIDTH)] = 0xff0000;
+			}
 		}
 	}
 	
