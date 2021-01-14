@@ -108,7 +108,7 @@ public class save {
                 break;
             }
         }
-    }
+    } 
 
     public void tick(){
         File file = new File("save.txt");

@@ -16,10 +16,10 @@ public class Player extends Entity {
 	public int dir = rightDir;
 	public double speed = 2.5;
 	
-	public  int maskx = 5;
-	public int masky = 14;
-	public  int maskw = 20;
-	public  int maskh = 20;
+	public  int maskx = 0;
+	public int masky = 0;
+	public  int maskw = 15;
+	public  int maskh = 23;
 	
 	public int frames = 0, maxframes = 8;
 	public int damageFrame = 0;
@@ -52,6 +52,10 @@ public class Player extends Entity {
 	public boolean shoot = false, mouseShoot = false;
 	
 	private boolean moved = false;
+
+	public boolean getMoved(){
+		return this.moved;
+	}
 	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -65,14 +69,14 @@ public class Player extends Entity {
 		
 		for(int i = 0; i < maxIndex; i++) {
 			
-			idleRightPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 0, 32, 32);
-			idleLeftPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 32, 32, 32);
+			idleRightPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 0, 15, 23);
+			idleLeftPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 32, 15, 23);
 			
-			rightPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 64, 32, 32);
-			leftPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 98, 32, 32);
+			rightPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 64, 15, 23);
+			leftPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 98, 15, 23);
 			
-			gunRightPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 128, 32, 32);
-			gunLeftPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 128+32, 32, 32);
+			gunRightPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 128, 15, 23);
+			gunLeftPlayer[i] = Game.spritesheet.getSprite(64 + (i*32), 128+32, 15, 23);
 		}
 	}
 
@@ -102,6 +106,7 @@ public class Player extends Entity {
 				jumpUp = false;
 				jumpDown = true;
 			}
+			System.out.println(z);
 		}
 		
 		moved = false;
@@ -167,35 +172,29 @@ public class Player extends Entity {
 					double dy = Math.sin(angle);
 					int px = 16;
 					int py = 16;
-					double speed = 0;
+					double speed = 3;
 						
 					if(dir == rightDir) {
 						if(moved) {
 							
-							px = 27;
+							px = 18;
 							dx = 1;
-							py = 20;
-							speed = 4.5;
+							py = 10;
 						}else {
-							speed = 3;
-							px = 23;
+							px = 20;
 							dx = 1;
-							py = 22;
-						}
-						
-					}else {
-						
+							py = 10;
+						}			
+					}else {	
 						if(moved) {
 							
 							px = 5;
 							dx = -1;
-							py = 18;
-							speed = 4.5;
+							py = 10;
 						}else {
-							speed = 3;
-							px = 5;
+							px = -1;
 							dx = -1;
-							py = 22;
+							py = 11;
 						}
 					}
 				
@@ -265,22 +264,22 @@ public class Player extends Entity {
 			if(dir == rightDir && moved) {
 				
 				g.drawImage(gunRightPlayer[index], (int)this.getX() - Camera.x, (int)this.getY() - Camera.y - z,null);
-				g.drawImage(Entity.WEAPON_RIGHT, this.getX() + 5 - Camera.x, this.getY() + 12 - Camera.y - z, null);
+				g.drawImage(Entity.WEAPON_RIGHT, this.getX() - 8 - Camera.x, this.getY() + 1 - Camera.y - z, null);
 			}else if(dir == leftDir && moved) {
 				
 				g.drawImage(gunLeftPlayer[index], (int)this.getX() - Camera.x, (int)this.getY() - Camera.y -z,null);
 				//arma76
-				g.drawImage(Entity.WEAPON_LEFT, this.getX() - Camera.x, this.getY() + 16 - Camera.y -z, null);
+				g.drawImage(Entity.WEAPON_LEFT, this.getX() - 8 - Camera.x, this.getY() + 8 - Camera.y -z, null);
 			}
 
 			if(dir == rightDir && moved == false) {
 				
 				g.drawImage(idleRightPlayer[index], (int)this.getX() - Camera.x, (int)this.getY() - Camera.y -z,null);
-				g.drawImage(Entity.WEAPON_RIGHT, this.getX() - 1 - Camera.x, this.getY() + 14 - Camera.y -z, null);
+				g.drawImage(Entity.WEAPON_RIGHT, this.getX() - 6 - Camera.x, this.getY() +2  - Camera.y -z, null);
 			}else if(dir == leftDir && moved == false) {
 				
 				g.drawImage(idleLeftPlayer[index], (int)this.getX() - Camera.x, (int)this.getY() - Camera.y -z,null);
-				g.drawImage(Entity.WEAPON_LEFT, this.getX() + 3 - Camera.x, this.getY() + 20 - Camera.y -z, null);
+				g.drawImage(Entity.WEAPON_LEFT, this.getX() - 6 - Camera.x, this.getY() + 9 - Camera.y -z, null);
 			}
 		}else {
 			if(dir == rightDir && moved) {
@@ -320,8 +319,8 @@ public class Player extends Entity {
 		}
 		
 		
-		//g.setColor(Color.BLUE);
-		//g.fillRect(this.getX() + maskx - Camera.x, this.getY() + masky - Camera.y, maskw, maskh);
+		// g.setColor(Color.BLUE);
+		// g.fillRect(this.getX() + maskx - Camera.x, this.getY() + masky - z - Camera.y, maskw, maskh);
 	}
 	
 }

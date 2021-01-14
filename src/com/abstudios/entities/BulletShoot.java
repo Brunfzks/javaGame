@@ -22,7 +22,10 @@ public class BulletShoot extends Entity{
 	}
 	
 	public void tick() {
-		
+
+		if(Game.player.getMoved())
+			this.speed = 4.5; 
+
 		x+=dx*speed;
 		y+=dy*speed;
 		curentlife ++;

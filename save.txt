@@ -1,0 +1,5 @@
+level:4
+vida:57
+ammo:6
+playerX:586
+playerY:4::

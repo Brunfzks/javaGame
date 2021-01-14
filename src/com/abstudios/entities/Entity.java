@@ -26,7 +26,7 @@ public class Entity {
 	
 	protected double x;
 	protected double y;
-	protected int z;
+	protected int z = 0;;
 	protected int width;
 	protected int height;
 	
@@ -48,6 +48,11 @@ public class Entity {
 	
 	public void tick() {
 		
+	}
+
+	public double calculateDistance(int x1, int y1, int x2, int y2 ){
+
+		return Math.sqrt((x1 -x2) * (x1 - x2) + (y1 - y2) * (y1- y2));
 	}
 	
 	public void setMask(int maskx, int masky, int maskw, int maskh) {
@@ -87,6 +92,15 @@ public class Entity {
 	public int getY() {
 		
 		return (int) this.y;
+	}
+	public int getZ() {
+		
+		return (int) this.z;
+	}
+	
+	public int setZ(int z) {
+		
+		return this.z = z;
 	}
 	
 	public int getWidth() {

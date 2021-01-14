@@ -66,7 +66,7 @@ public class Menu {
             }else if(options[currentOptions] == "Carregar Jogo"){
                 File file = new File("save.txt");
                 if(file.exists()){
-                    String saver = save.loadGame(10);
+                    String saver = save.loadGame(0);
                     save.aplySave(saver);
                 }
             }

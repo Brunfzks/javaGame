@@ -33,8 +33,9 @@ import com.abstudios.world.Camera;
 import com.abstudios.world.World;
 
 import java.awt.Font;
+import java.awt.event.*;
 
-public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 935073154186464789L;
 	public static JFrame frame;
@@ -71,6 +72,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("Fipps-Regular.ttf");
 	public static Font fipps;
 
+	//Rotate
+	public int mx, my;
+
 	public Game() {
 
 		// Fonts
@@ -87,6 +91,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		rand = new Random();
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
 		//Inicializando objetos
@@ -97,6 +102,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		spritesheet = new Spritesheet("/spritesheet32.png");
 		elementsUi();
 		player = new Player(0, 0, 32, 32, spritesheet.getSprite(192, 0, 32, 32));
+		System.out.println(player.maskx + "lalalalala");
 		entities.add(player);
 		world = new World("/level1.png");
 
@@ -216,7 +222,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 					 (int)player.getX(),
 					 (int)player.getY()};
 
-				save.saveGame(opt1, opt2, 10);
+				save.saveGame(opt1, opt2, 0);
 				System.out.println("Jogo Salvo");
 			}
 			menu.tick();
@@ -238,7 +244,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		/*Renderiza��o do Jogo*/
-		//Graphics2D g2 = (Graphics2D) g;
+		// Graphics2D g2 = (Graphics2D) g;
 		world.render(g);
 		for(int i = 0; i < entities.size(); i++) {
 			
@@ -265,6 +271,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		}else if(gameState == "MENU"){
 			menu.render(g);
 		}
+
+		//ROTATE
+		// Graphics2D g2 = (Graphics2D) g;
+		// double angleMouse = Math.atan2(my -200 + 25, mx - 200 + 25);
+		// g2.rotate(angleMouse, 200+25, 200+25);
+		// g.setColor(Color.red);
+		// g.fillRect(200, 200, 50, 50);
+
 		bs.show();
 	}
 	
@@ -444,5 +458,19 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		this.mx = e.getX();
+		this.my = e.getY();
+
 	}
 }

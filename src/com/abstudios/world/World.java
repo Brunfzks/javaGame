@@ -218,7 +218,9 @@ public class World {
 			 if(!(tiles[x1 + (y1*World.WIDTH)] instanceof WallTile ||
 				tiles[x2 + (y2*World.WIDTH)] instanceof WallTile  ||
 				tiles[x3 + (y3*World.WIDTH)] instanceof WallTile  ||
-				tiles[x4 + (y4*World.WIDTH)] instanceof WallTile) && !(tiles[x1 + (y1*World.WIDTH)] instanceof WallTileNoJump ||
+				tiles[x4 + (y4*World.WIDTH)] instanceof WallTile) &&
+				
+				!(tiles[x1 + (y1*World.WIDTH)] instanceof WallTileNoJump ||
 				tiles[x2 + (y2*World.WIDTH)] instanceof WallTileNoJump  ||
 				tiles[x3 + (y3*World.WIDTH)] instanceof WallTileNoJump  ||
 				tiles[x4 + (y4*World.WIDTH)] instanceof WallTileNoJump)){
