@@ -10,12 +10,14 @@ import java.util.Random;
 
 import com.abstudios.graficos.Spritesheet;
 import com.abstudios.main.Game;
+import com.abstudios.world.AStar;
 import com.abstudios.world.Camera;
+import com.abstudios.world.Vector2i;
 import com.abstudios.world.World;
 
 public class Enemy extends Entity{
 
-	private double speed = 0.8;
+	private double speed = 2;
 	
 	private int maskx = 0, masky = 16, maskw = 20, maskh = 20;
 	
@@ -53,28 +55,32 @@ public class Enemy extends Entity{
 		if(sawPlayer){
 			if(isCollidingWithPlayer() == false) {
 				if(Game.rand.nextInt(100) < 60) {
+					if(patch == null || patch.size() == 0){
+
+						Vector2i start = new Vector2i((int)(x/32), (int)(y/32));
+						Vector2i end = new Vector2i((int)(Game.player.x/32), (int)(Game.player.y/32));
+		
+						patch = AStar.findPath(Game.world, start, end);
+					}
+					followPatch(patch, this.speed);
+				
 					if((int)x < Game.player.getX() && World.isFree((int)(x+speed), this.getY())
 							&& !isColliding((int)(x+speed), this.getY())) {
 						
 						dir = rightDir;
-						x+= speed;
 					}else if((int)x > Game.player.getX() && World.isFree((int)(x-speed), this.getY()) 
 							&& !isColliding((int)(x-speed), this.getY())) {
 						
 						dir = leftDir;
-						x -= speed;
 					}
 					
 					if((int) y > Game.player.getY() && World.isFree(this.getX(), (int)(y - speed))
 							&& !isColliding(this.getX(), (int)(y - speed))) {
 						
-						y-= speed;
 					}else if((int) y < Game.player.getY() && World.isFree(this.getX(), (int)(y + speed))
 							&& !isColliding(this.getX(), (int)(y + speed))) {
 						
-						y+= speed;
 					}	
-					
 				}
 			}else {
 				if(Game.rand.nextInt(100) < 90) {

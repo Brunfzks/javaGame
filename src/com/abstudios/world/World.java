@@ -31,6 +31,7 @@ public class World {
 		
 		try {
 			BufferedImage map = ImageIO.read(getClass().getResource(path));
+			System.out.println(path);
 			int[] pixels = new int[map.getWidth() * map.getHeight()];
 			tiles = new Tile[map.getWidth() * map.getHeight()];
 			
@@ -256,6 +257,7 @@ public class World {
 		Game.player.ammo = ammo;
 		Game.player.life = life;
 		Game.entities.add(Game.player);
+		System.out.println(level);
 		Game.world = new World("/"+level);
 	}
 	

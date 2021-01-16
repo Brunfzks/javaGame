@@ -16,7 +16,7 @@ public class AStar {
             if(n1.fCost < n0.fCost) 
                 return + 1;
             if(n1.fCost > n0.fCost)
-                return -1;
+                return - 1;
             return 0;
         }
     };
@@ -32,7 +32,7 @@ public class AStar {
         double dx = tile.x - goal.x;
         double dy = tile.y - goal.y;
 
-        return Math.sqrt(dx * dx + dy*dy);
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     private static boolean vecInList(List<Node> list, Vector2i vector){
@@ -90,20 +90,20 @@ public class AStar {
 
                 if(i == 0) {  
                      Tile teste = World.tiles[x + xi + 1 + ((y + yi) * World.WIDTH)];
-                     Tile teste2 = World.tiles[x + xi + 1 + ((y + yi) * World.WIDTH)];
+                     Tile teste2 = World.tiles[x + xi + ((y + yi + 1) * World.WIDTH)];
 
                         if(teste instanceof WallTile || teste2 instanceof WallTile || teste instanceof WallTileNoJump || teste2 instanceof WallTileNoJump){
                             continue;
                         }
                 }else if(i == 2){
-                    Tile teste = World.tiles[x + xi + 1 + ((y + yi) * World.WIDTH)];
-                    Tile teste2 = World.tiles[x + xi + ((y + yi) * World.WIDTH)];
+                    Tile teste = World.tiles[x + xi - 1 + ((y + yi) * World.WIDTH)];
+                    Tile teste2 = World.tiles[x + xi + ((y + yi + 1) * World.WIDTH)];
 
                        if(teste instanceof WallTile || teste2 instanceof WallTile || teste instanceof WallTileNoJump || teste2 instanceof WallTileNoJump){
                            continue;
                        }
                 }else if( i ==6){
-                    Tile teste = World.tiles[x + xi + ((y + yi -1) * World.WIDTH)];
+                    Tile teste = World.tiles[x + xi + ((y + yi - 1) * World.WIDTH)];
                     Tile teste2 = World.tiles[x + xi + 1 +((y + yi) * World.WIDTH)];
 
                        if(teste instanceof WallTile || teste2 instanceof WallTile || teste instanceof WallTileNoJump || teste2 instanceof WallTileNoJump){

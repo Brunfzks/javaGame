@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import com.abstudios.main.Game;
 import com.abstudios.world.Camera;
+import com.abstudios.world.Node;
+import com.abstudios.world.Vector2i;
 import com.abstudios.entities.Entity;
 
 
@@ -23,6 +26,9 @@ public class Entity {
 	public int masky;
 	public  int maskw;
 	public  int maskh;
+	public double speed;
+
+	protected List<Node> patch;
 	
 	protected double x;
 	protected double y;
@@ -48,6 +54,30 @@ public class Entity {
 	
 	public void tick() {
 		
+	}
+
+	public void followPatch(List<Node> patch, double speed){
+		if(patch != null){
+			if(patch.size() > 0){
+				Vector2i target = patch.get(patch.size() - 1).tile;
+
+				if(x < target.x * 32){
+					x+= speed;
+				}else if(x > target.x * 32){
+					x-= speed;
+				}
+
+				if(y < target.y * 32){
+					y+= speed;
+				}else if(y > target.y * 32){
+					y-= speed;
+				}
+
+				if(x == target.x * 32 && y == target.y * 32){
+					patch.remove(patch.size() - 1);
+				}
+			}
+		}
 	}
 
 	public double calculateDistance(int x1, int y1, int x2, int y2 ){

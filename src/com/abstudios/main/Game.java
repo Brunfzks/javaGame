@@ -109,7 +109,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		spritesheet = new Spritesheet("/spritesheet32.png");
 		lightmap = new LightMap();
 		elementsUi();
-		player = new Player(0, 0, 32, 32, spritesheet.getSprite(192, 0, 32, 32));
+		player = new Player(0, 0, 15, 23, spritesheet.getSprite(192, 0, 15, 23));
 		System.out.println(player.maskx + "lalalalala");
 		entities.add(player);
 		world = new World("/level1.png");
@@ -231,6 +231,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				save.saveGame(opt1, opt2, 0);
 				System.out.println("Jogo Salvo");
 			}
+			player.updateCamera();
 			menu.tick();
 		}
 	}
