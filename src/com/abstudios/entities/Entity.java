@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Comparator;
 import java.util.List;
 
 import com.abstudios.main.Game;
@@ -36,6 +37,8 @@ public class Entity {
 	protected int width;
 	protected int height;
 	
+	public int depth;
+	
 	private BufferedImage sprite;
 	
 	public Entity(int x, int y, int width, int height, BufferedImage sprite) {
@@ -55,6 +58,17 @@ public class Entity {
 	public void tick() {
 		
 	}
+
+	public static Comparator<Entity> nodeSorter = new Comparator<Entity>(){
+        @Override
+        public int compare(Entity n0, Entity n1){
+            if(n1.depth < n0.depth) 
+                return + 1;
+            if(n1.depth > n0.depth)
+                return  - 1;
+            return 0;
+        }
+    };
 
 	public void followPatch(List<Node> patch, double speed){
 		if(patch != null){

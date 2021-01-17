@@ -1,6 +1,5 @@
-// package com.abstudios.main;
+package com.abstudios.main;
 
-// public class sound {
+public class sound {
     
-//     private AudioClipe clip;
-// }
+}

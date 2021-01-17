@@ -57,8 +57,10 @@ public class Player extends Entity {
 		return this.moved;
 	}
 	
-	public Player(int x, int y, int width, int height, BufferedImage sprite) {
+	public Player(int x, int y, int width, int height, BufferedImage sprite, int depth) {
 		super(x, y, width, height, sprite);
+
+		this.depth = depth;
 		
 		idleRightPlayer = new BufferedImage[4];
 		idleLeftPlayer = new BufferedImage[4];
@@ -81,6 +83,7 @@ public class Player extends Entity {
 	}
 
 	public void tick() {
+		System.out.println(depth);
 
 		if(jump){
 			if(isJumping == false){

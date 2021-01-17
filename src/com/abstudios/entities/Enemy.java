@@ -49,6 +49,8 @@ public class Enemy extends Entity{
 	
 	public void tick() {
 		
+		depth = 0;
+
 		if(this.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) < 150)
 			this.sawPlayer = true;	
 
@@ -62,6 +64,7 @@ public class Enemy extends Entity{
 		
 						patch = AStar.findPath(Game.world, start, end);
 					}
+					
 					followPatch(patch, this.speed);
 				
 					if((int)x < Game.player.getX() && World.isFree((int)(x+speed), this.getY())

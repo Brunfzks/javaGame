@@ -1,13 +1,16 @@
 package com.abstudios.main;
 
-
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -17,10 +20,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.awt.image.DataBufferInt;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import com.abstudios.entities.Bullet;
@@ -36,6 +41,7 @@ import com.abstudios.world.World;
 
 import java.awt.Font;
 import java.awt.event.*;
+import java.awt.Toolkit;
 
 public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
@@ -74,6 +80,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public LightMap lightmap;
 
+	public static BufferedImage miniMapa;
+	public static int[] miniMapaPixels;
+
 	// CARREGANDO FONTS
 	public InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("Fipps-Regular.ttf");
 	public static Font fipps;
@@ -109,10 +118,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		spritesheet = new Spritesheet("/spritesheet32.png");
 		lightmap = new LightMap();
 		elementsUi();
-		player = new Player(0, 0, 15, 23, spritesheet.getSprite(192, 0, 15, 23));
+		player = new Player(0, 0, 15, 23, spritesheet.getSprite(192, 0, 15, 23), 1);
 		System.out.println(player.maskx + "lalalalala");
 		entities.add(player);
-		world = new World("/level1.png");
+		world = new World("/level2.png");
+		miniMapa = new BufferedImage(World.WIDTH, World.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		miniMapaPixels = ((DataBufferInt)miniMapa.getRaster().getDataBuffer()).getData();
 
 		menu = new Menu();
 	}
@@ -127,6 +138,20 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.pack();
+		
+		Image icon = null;
+		try {
+			icon = ImageIO.read(getClass().getResource(("/target.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image cursorIcon = toolkit.getImage(getClass().getResource("/cursorIcon.png"));
+		Cursor c = toolkit.createCustomCursor(cursorIcon, new Point(0, 0), "cursor");
+
+		frame.setCursor(c);
+		frame.setIconImage(icon);
 	}
 	
 	public void elementsUi() {
@@ -265,6 +290,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		/*Renderiza��o do Jogo*/
 		// Graphics2D g2 = (Graphics2D) g;
 		world.render(g);
+		// System.out.println(Game.player.depth + " " + Game.enemis.get(0).depth);
+		Collections.sort(entities, Entity.nodeSorter);
+
 		for(int i = 0; i < entities.size(); i++) {
 			
 			Entity e = entities.get(i);
@@ -298,6 +326,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		// g.setColor(Color.red);
 		// g.fillRect(200, 200, 50, 50);
 
+		World.renderMiniMap();
+		g.drawImage(miniMapa, 900, 80, World.WIDTH * 6, World.HEIGHT * 6, null);
 		bs.show();
 	}
 	

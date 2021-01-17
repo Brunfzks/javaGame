@@ -19,13 +19,16 @@ import com.abstudios.graficos.Spritesheet;
 import com.abstudios.main.Game;
 import com.abstudios.world.Tile;
 import com.abstudios.world.World;
+
 import com.abstudios.world.FloorTile;
 
 public class World {
 	
 	public static Tile[] tiles;
 	public static int WIDTH, HEIGHT;
-	public static final int TILE_SIZE = 32; 
+	public static final int TILE_SIZE = 32;
+	public static final int miniMapWidth = 20;
+	public static final int miniMapHeigth = 20;
 
 	public World(String path) {
 		
@@ -253,12 +256,32 @@ public class World {
 		Game.entities = new ArrayList<Entity>();
 		Game.enemis = new ArrayList<Enemy>();
 		Game.spritesheet = new Spritesheet("/spritesheet32.png");
-		Game.player = new Player(0, 0, 32, 32, Game.spritesheet.getSprite(192, 0, 32, 32));
+		Game.player = new Player(0, 0, 32, 32, Game.spritesheet.getSprite(192, 0, 32, 32), 1);
 		Game.player.ammo = ammo;
 		Game.player.life = life;
 		Game.entities.add(Game.player);
 		System.out.println(level);
 		Game.world = new World("/"+level);
+	}
+
+	public static void renderMiniMap(){
+		for(int i = 0; i < Game.miniMapaPixels.length; i++){
+			Game.miniMapaPixels[i] = 0;
+		}
+		for(int xx = 0; xx < WIDTH; xx++){
+			for(int yy = 0; yy < HEIGHT; yy++){
+				if(tiles[xx + (yy*WIDTH)] instanceof WallTile){
+					Game.miniMapaPixels[xx + (yy*WIDTH)] = 0xff0000;
+				}else if(tiles[xx + (yy*WIDTH)] instanceof WallTileNoJump){
+					Game.miniMapaPixels[xx + (yy*WIDTH)] = 0xffff00;
+				}
+		}
+	}
+
+		int xPlayer = Game.player.getX() / 32;
+		int yPlayer = Game.player.getY() / 32;
+
+		Game.miniMapaPixels[xPlayer + (yPlayer*WIDTH)] = 0xffffff;
 	}
 	
 	public void render(Graphics g) {
