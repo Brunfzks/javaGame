@@ -49,6 +49,7 @@ public class Menu {
         }
 
         if(enter){
+            Sound.backGround.loop();
             enter = false;
             if(options[currentOptions] == "Novo Jogo" || options[currentOptions] == "Continuar"){
                 Game.gameState = "NORMAL";
